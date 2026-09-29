@@ -4,4 +4,4 @@ pluginManagement {
 dependencyResolutionManagement {
     repositories { google(); mavenCentral() }
 }
-rootProject.name = "ruphas-market"
+rootProject.name = "ats-tsalatsah"
