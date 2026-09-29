@@ -56,8 +56,8 @@ class MainActivity : Activity() {
                     val list = Array(arr.length()) { arr.getString(it) }
                     val svc = Intent(this@MainActivity, RunnerService::class.java)
                         .putExtra("pkgs", list)
-                        .putExtra("g1", g1 * 1000L)
-                        .putExtra("g2", g2 * 1000L)
+                        .putExtra("g1", g1.toLong())
+                        .putExtra("g2", g2.toLong())
                         .putExtra("back", back)
                     startForegroundService(svc)
                 }
