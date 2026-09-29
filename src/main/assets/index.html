@@ -34,7 +34,7 @@ input[type=checkbox]:checked{background:#fff;border-color:#fff}
 input[type=checkbox]:checked::after{content:'';position:absolute;left:8px;top:3px;width:6px;height:12px;border:solid #000;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
 .rw{display:flex;align-items:center;justify-content:space-between;gap:14px}
 .rw b{font-size:15px}
-.num{width:88px;padding:13px;border-radius:16px;border:1px solid #2a2a2a;background:#000;color:#fff;font-size:18px;font-weight:700;text-align:center;outline:0}
+.num{width:112px;padding:13px 8px;border-radius:16px;border:1px solid #2a2a2a;background:#000;color:#fff;font-size:18px;font-weight:700;text-align:center;outline:0}
 pre{margin:0;white-space:pre-wrap;font:12px/1.75 ui-monospace,monospace;color:#c8c8c8}
 nav{position:fixed;left:14px;right:14px;bottom:16px;display:flex;gap:4px;background:#0f0f0f;border:1px solid #262626;border-radius:28px;padding:6px}
 nav a{flex:1;text-align:center;padding:14px 0;border-radius:22px;font-size:12px;font-weight:600;color:#7d7d7d}
@@ -43,7 +43,7 @@ nav a.on{background:#fff;color:#000}
 <svg width="0" height="0" style="position:absolute"><defs><path id="p" d="M231.0,241.5 L149.0,241.5 L128.5,217.0 L183.0,145.5 L329.0,145.5 L374.5,205.0 L345.0,205.5 L317.0,169.5 L196.0,168.5 L158.5,217.0 L231.0,217.5 L231.0,241.5 Z M256.0,367.5 L160.5,254.0 L190.0,253.5 L256.0,330.5 L330.5,242.0 L269.0,239.5 L252.5,228.0 L243.0,205.5 L184.0,205.5 L199.5,183.0 L311.0,181.5 L328.0,205.5 L276.0,205.5 L272.5,209.0 L273.5,215.0 L277.0,217.5 L382.0,217.5 L256.0,367.5 Z M256.0,311.5 L228.5,279.0 L243.5,285.0 L244.0,224.5 L256.0,238.5 L267.5,245.0 L267.5,285.0 L283.5,279.0 L256.0,311.5 Z"/></defs></svg>
 
 <div class="pg on" id="p0">
-<div class="top"><div class="lg"><svg viewBox="128 145 255 223"><use href="#p"/></svg></div><b>Ats-tsalatsah</b><small>v1.0</small></div>
+<div class="top"><div class="lg"><svg viewBox="128 145 255 223"><use href="#p"/></svg></div><b>Ats-tsalatsah</b><small>v1.1</small></div>
 <div class="hero">
 <svg viewBox="128 145 255 223"><use href="#p"/></svg>
 <h2>Auto create<br>cabang.</h2>
@@ -69,8 +69,8 @@ nav a.on{background:#fff;color:#000}
 <div class="pg" id="p2"><h1>Aktivitas.</h1><div class="sub" style="margin-left:4px">Catatan proses</div><div class="card" style="margin-top:16px"><pre id="lg">Belum ada aktivitas.</pre></div></div>
 
 <div class="pg" id="p3"><h1>Setelan.</h1><div class="sub" style="margin-left:4px">Atur jeda dan izin</div>
-<div class="card rw" style="margin-top:16px"><div><b>Jeda putaran 1</b><div class="sub">Detik, sampai loading setengah</div></div><input type="number" class="num" id="g1" onchange="sv()"></div>
-<div class="card rw"><div><b>Jeda putaran 2</b><div class="sub">Detik, sampai ketemu Layla</div></div><input type="number" class="num" id="g2" onchange="sv()"></div>
+<div class="card rw" style="margin-top:16px"><div><b>Jeda putaran 1</b><div class="sub">Milidetik (1000 = 1 detik)</div></div><input type="number" class="num" id="g1" step="100" onchange="sv()"></div>
+<div class="card rw"><div><b>Jeda putaran 2</b><div class="sub">Milidetik (1000 = 1 detik)</div></div><input type="number" class="num" id="g2" step="100" onchange="sv()"></div>
 <label class="card rw"><div><b>Kembali ke app</b><div class="sub">Setelah semua selesai</div></div><input type="checkbox" id="bk" onchange="sv()"></label>
 <div class="lbl">Izin</div>
 <button class="btn g" onclick="App.overlay()">Izin tampil di atas app lain</button>
@@ -89,15 +89,15 @@ nav a.on{background:#fff;color:#000}
 var A=[],S={};
 try{S=JSON.parse(localStorage.r||'{}')}catch(e){}
 var sel=new Set(S.sel||[]);
-g1.value=S.g1||10;g2.value=S.g2||30;bk.checked=S.bk!==false;
-function sv(){S.g1=+g1.value||10;S.g2=+g2.value||30;S.bk=bk.checked;S.sel=[...sel];localStorage.r=JSON.stringify(S)}
+g1.value=S.m1||5000;g2.value=S.m2||7000;bk.checked=S.bk!==false;
+function sv(){S.m1=Math.round(+g1.value)||5000;S.m2=Math.round(+g2.value)||7000;S.bk=bk.checked;S.sel=[...sel];localStorage.r=JSON.stringify(S)}
 function tab(n){for(var i=0;i<4;i++){document.getElementById('p'+i).className='pg'+(i==n?' on':'');document.getElementById('t'+i).className=i==n?'on':''}window.scrollTo(0,0)}
 function vis(){var t=q.value.toLowerCase();return A.filter(function(a){return !t||a.n.toLowerCase().indexOf(t)>=0||a.p.toLowerCase().indexOf(t)>=0})}
 function draw(){ls.innerHTML=vis().map(function(a){return '<label class="it"><input type="checkbox" '+(sel.has(a.p)?'checked':'')+' onchange="tg(\''+a.p+'\',this.checked)"><span>'+a.n+'<small>'+a.p+'</small></span></label>'}).join('');cnt.textContent=sel.size}
 function tg(p,c){if(c)sel.add(p);else sel.delete(p);sv();cnt.textContent=sel.size}
 function pick(v){vis().forEach(function(a){if(v)sel.add(a.p);else sel.delete(a.p)});sv();draw()}
 function qs(t){q.value=t;draw()}
-function go(){if(!sel.size){st.textContent='Pilih app dulu di tab Apps.';return}sv();App.start(JSON.stringify([...sel]),S.g1,S.g2,bk.checked)}
+function go(){if(!sel.size){st.textContent='Pilih app dulu di tab Apps.';return}sv();App.start(JSON.stringify([...sel]),S.m1,S.m2,bk.checked)}
 setInterval(function(){try{var s=JSON.parse(App.status());
 st.textContent=s.r?('Berjalan '+s.d+'/'+s.t):'Siap.';
 bar.style.width=(s.t?100*s.d/s.t:0)+'%';
