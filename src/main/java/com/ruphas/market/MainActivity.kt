@@ -1,4 +1,4 @@
-package com.ruphas.market
+package com.ats.tsalatsah
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -20,7 +20,7 @@ class MainActivity : Activity() {
         val w = WebView(this)
         w.settings.javaScriptEnabled = true
         w.settings.domStorageEnabled = true
-        w.setBackgroundColor(0xFF1A1114.toInt())
+        w.setBackgroundColor(0xFF000000.toInt())
         w.addJavascriptInterface(Bridge(), "App")
         w.loadUrl("file:///android_asset/index.html")
         setContentView(w)
