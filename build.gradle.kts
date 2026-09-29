@@ -4,14 +4,14 @@ plugins {
 }
 
 android {
-    namespace = "com.ruphas.market"
+    namespace = "com.ats.tsalatsah"
     compileSdk = 34
     defaultConfig {
-        applicationId = "com.ruphas.market"
+        applicationId = "com.ats.tsalatsah"
         minSdk = 26
         targetSdk = 34
-        versionCode = 2
-        versionName = "0.2.0"
+        versionCode = 1
+        versionName = "1.0.0"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
