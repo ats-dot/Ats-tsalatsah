@@ -1,66 +1,81 @@
 <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ats-tsalatsah</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:#000;color:#fff;font:15px/1.5 -apple-system,system-ui,sans-serif;padding-bottom:88px}
-.pg{display:none;padding:30px 24px}.pg.on{display:block}
-.brand{display:flex;align-items:center;gap:14px;margin-bottom:44px}
-.brand svg{width:36px;height:32px;fill:#fff}
-.brand b{font-weight:400;font-size:12px;letter-spacing:.34em;text-transform:uppercase}
-h1{font:400 36px/1.15 Georgia,'Times New Roman',serif;margin:0 0 8px;letter-spacing:-.01em}
-.sub{color:#7a7a7a;font-size:11px;letter-spacing:.18em;text-transform:uppercase}
-.big{font:300 96px/1 Georgia,serif;margin:40px 0 6px}
-button{width:100%;padding:17px;margin-top:14px;border-radius:2px;border:1px solid #fff;background:#fff;color:#000;font-size:12px;font-weight:600;letter-spacing:.26em;text-transform:uppercase}
-button.g{background:transparent;color:#fff;border-color:#333}
-.row{display:flex;gap:8px;margin-top:6px}
-.row button{padding:13px 2px;font-size:10px;letter-spacing:.12em}
-input[type=text],input[type=number]{width:100%;padding:14px 0;border:0;border-bottom:1px solid #333;background:transparent;color:#fff;font-size:17px;border-radius:0;outline:0}
-input[type=checkbox]{width:20px;height:20px;accent-color:#fff}
-.it{display:flex;gap:16px;align-items:center;padding:15px 0;border-bottom:1px solid #1a1a1a}
-.it span{flex:1;overflow:hidden}.it small{display:block;color:#6a6a6a;font-size:11px}
-.bar{height:2px;background:#222;margin-top:34px}
-.bar i{display:block;height:2px;background:#fff;width:0;transition:width .4s}
-#st{margin-top:14px}
-pre{white-space:pre-wrap;font:12px/1.7 ui-monospace,monospace;color:#bdbdbd;margin-top:26px}
-.s{display:block;margin-top:30px;color:#7a7a7a;font-size:11px;letter-spacing:.16em;text-transform:uppercase}
-.c{display:flex;gap:14px;align-items:center;margin-top:32px;font-size:14px}
-nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:#000;border-top:1px solid #1a1a1a;padding:0 8px 6px}
-nav a{flex:1;text-align:center;padding:17px 0 13px;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#5f5f5f;border-top:2px solid transparent;margin-top:-1px}
-nav a.on{color:#fff;border-top-color:#fff}
+body{margin:0;background:#000;color:#fff;font:15px/1.45 -apple-system,system-ui,'Segoe UI',sans-serif;padding-bottom:112px}
+.pg{display:none;padding:22px 18px}.pg.on{display:block}
+button{border:0;font:inherit;cursor:pointer}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.lg{width:46px;height:46px;border-radius:15px;background:#151515;border:1px solid #2a2a2a;display:grid;place-items:center}
+.lg svg{width:26px;height:23px;fill:#fff}
+.top b{font-size:17px;font-weight:700}
+.top small{margin-left:auto;font-size:11px;color:#8a8a8a;border:1px solid #2a2a2a;border-radius:99px;padding:5px 12px}
+.hero{position:relative;overflow:hidden;border-radius:30px;padding:24px;background:linear-gradient(145deg,#fff 0%,#dcdcdc 55%,#a6a6a6 100%);color:#0a0a0a}
+.hero>svg{position:absolute;right:-20px;top:-10px;width:170px;fill:#000;opacity:.09}
+.hero h2{position:relative;font-size:34px;line-height:1.03;margin:0 0 30px;letter-spacing:-.035em;font-weight:800}
+.hero .n{position:relative;display:flex;align-items:flex-end;justify-content:space-between}
+.hero b{font-size:60px;line-height:.85;font-weight:800;letter-spacing:-.05em}
+.hero small{display:block;font-size:12px;color:#444;margin-top:8px}
+.pill{border-radius:99px;padding:13px 20px;background:#0a0a0a;color:#fff;font-size:13px;font-weight:600}
+h1{font-size:36px;letter-spacing:-.035em;font-weight:800;margin:6px 4px 2px}
+.sub{color:#8a8a8a;font-size:13px}
+.lbl{color:#777;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;margin:26px 6px 4px}
+.btn{width:100%;padding:18px;border-radius:99px;background:#fff;color:#000;font-size:15px;font-weight:700;margin-top:10px}
+.btn.g{background:#141414;color:#fff;border:1px solid #2a2a2a;font-weight:600}
+.card{background:#101010;border:1px solid #232323;border-radius:24px;padding:18px 20px;margin-top:10px}
+.bar{height:8px;background:#222;border-radius:9px;overflow:hidden;margin-top:14px}
+.bar i{display:block;height:100%;width:0;border-radius:9px;background:linear-gradient(90deg,#666,#fff);transition:width .4s}
+.in{width:100%;padding:16px 20px;border-radius:99px;border:1px solid #2a2a2a;background:#111;color:#fff;font-size:15px;outline:0;margin-top:14px}
+.chips{display:flex;gap:8px;margin-top:12px;overflow-x:auto}
+.chip{flex:none;padding:11px 18px;border-radius:99px;background:#141414;border:1px solid #2a2a2a;color:#fff;font-size:13px;font-weight:600}
+.it{display:flex;gap:14px;align-items:center;background:#101010;border:1px solid #232323;border-radius:20px;padding:15px 18px;margin-top:8px}
+.it span{flex:1;overflow:hidden;font-weight:600}.it small{display:block;color:#6d6d6d;font-size:11px;font-weight:400}
+input[type=checkbox]{-webkit-appearance:none;appearance:none;flex:none;width:26px;height:26px;border-radius:9px;border:1.5px solid #555;background:transparent;position:relative}
+input[type=checkbox]:checked{background:#fff;border-color:#fff}
+input[type=checkbox]:checked::after{content:'';position:absolute;left:8px;top:3px;width:6px;height:12px;border:solid #000;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+.rw{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.rw b{font-size:15px}
+.num{width:88px;padding:13px;border-radius:16px;border:1px solid #2a2a2a;background:#000;color:#fff;font-size:18px;font-weight:700;text-align:center;outline:0}
+pre{margin:0;white-space:pre-wrap;font:12px/1.75 ui-monospace,monospace;color:#c8c8c8}
+nav{position:fixed;left:14px;right:14px;bottom:16px;display:flex;gap:4px;background:#0f0f0f;border:1px solid #262626;border-radius:28px;padding:6px}
+nav a{flex:1;text-align:center;padding:14px 0;border-radius:22px;font-size:12px;font-weight:600;color:#7d7d7d}
+nav a.on{background:#fff;color:#000}
 </style></head><body>
+<svg width="0" height="0" style="position:absolute"><defs><path id="p" d="M231.0,241.5 L149.0,241.5 L128.5,217.0 L183.0,145.5 L329.0,145.5 L374.5,205.0 L345.0,205.5 L317.0,169.5 L196.0,168.5 L158.5,217.0 L231.0,217.5 L231.0,241.5 Z M256.0,367.5 L160.5,254.0 L190.0,253.5 L256.0,330.5 L330.5,242.0 L269.0,239.5 L252.5,228.0 L243.0,205.5 L184.0,205.5 L199.5,183.0 L311.0,181.5 L328.0,205.5 L276.0,205.5 L272.5,209.0 L273.5,215.0 L277.0,217.5 L382.0,217.5 L256.0,367.5 Z M256.0,311.5 L228.5,279.0 L243.5,285.0 L244.0,224.5 L256.0,238.5 L267.5,245.0 L267.5,285.0 L283.5,279.0 L256.0,311.5 Z"/></defs></svg>
 
 <div class="pg on" id="p0">
-<div class="brand"><svg viewBox="128 145 255 223"><path d="M231.0,241.5 L149.0,241.5 L128.5,217.0 L183.0,145.5 L329.0,145.5 L374.5,205.0 L345.0,205.5 L317.0,169.5 L196.0,168.5 L158.5,217.0 L231.0,217.5 L231.0,241.5 Z M256.0,367.5 L160.5,254.0 L190.0,253.5 L256.0,330.5 L330.5,242.0 L269.0,239.5 L252.5,228.0 L243.0,205.5 L184.0,205.5 L199.5,183.0 L311.0,181.5 L328.0,205.5 L276.0,205.5 L272.5,209.0 L273.5,215.0 L277.0,217.5 L382.0,217.5 L256.0,367.5 Z M256.0,311.5 L228.5,279.0 L243.5,285.0 L244.0,224.5 L256.0,238.5 L267.5,245.0 L267.5,285.0 L283.5,279.0 L256.0,311.5 Z"/></svg><b>Ats-tsalatsah</b></div>
-<h1>Auto create<br>cabang.</h1>
-<div class="sub">Buka app satu per satu</div>
-<div class="big" id="cnt">0</div>
-<div class="sub">App dipilih</div>
-<button onclick="go()">Mulai buka semua</button>
-<button class="g" onclick="App.stop()">Hentikan</button>
-<div class="bar"><i id="bar"></i></div>
-<div class="sub" id="st">Siap.</div>
+<div class="top"><div class="lg"><svg viewBox="128 145 255 223"><use href="#p"/></svg></div><b>Ats-tsalatsah</b><small>v1.0</small></div>
+<div class="hero">
+<svg viewBox="128 145 255 223"><use href="#p"/></svg>
+<h2>Auto create<br>cabang.</h2>
+<div class="n"><div><b id="cnt">0</b><small>app dipilih</small></div><button class="pill" onclick="tab(1)">Pilih app →</button></div>
+</div>
+<div class="lbl">Kontrol</div>
+<button class="btn" onclick="go()">Mulai buka semua</button>
+<button class="btn g" onclick="App.stop()">Hentikan</button>
+<div class="card"><div class="sub">Status</div><div id="st" style="font-size:21px;font-weight:700;margin-top:2px">Siap.</div><div class="bar"><i id="bar"></i></div></div>
 </div>
 
 <div class="pg" id="p1">
-<h1>Apps.</h1>
-<div class="sub" style="margin-bottom:22px">Pilih yang mau dibuka</div>
-<input type="text" id="q" placeholder="Cari app..." oninput="draw()">
-<div class="row" style="margin-top:18px">
-<button class="g" onclick="qs('mobile legends')">Mobile Legends</button>
-<button class="g" onclick="pick(1)">Pilih hasil</button>
-<button class="g" onclick="pick(0)">Kosongkan</button>
+<h1>Apps.</h1><div class="sub" style="margin-left:4px">Pilih yang mau dibuka</div>
+<input type="text" class="in" id="q" placeholder="Cari app..." oninput="draw()">
+<div class="chips">
+<button class="chip" onclick="qs('mobile legends')">Mobile Legends</button>
+<button class="chip" onclick="pick(1)">Pilih hasil</button>
+<button class="chip" onclick="pick(0)">Kosongkan</button>
 </div>
-<div id="ls" style="margin-top:8px"></div>
+<div id="ls" style="margin-top:6px"></div>
 </div>
 
-<div class="pg" id="p2"><h1>Aktivitas.</h1><div class="sub">Catatan proses</div><pre id="lg">Belum ada aktivitas.</pre></div>
+<div class="pg" id="p2"><h1>Aktivitas.</h1><div class="sub" style="margin-left:4px">Catatan proses</div><div class="card" style="margin-top:16px"><pre id="lg">Belum ada aktivitas.</pre></div></div>
 
-<div class="pg" id="p3"><h1>Setelan.</h1><div class="sub">Atur jeda dan izin</div>
-<label class="s">Jeda putaran 1 (detik)<input type="number" id="g1" value="10" onchange="sv()"></label>
-<label class="s">Jeda putaran 2 (detik)<input type="number" id="g2" value="30" onchange="sv()"></label>
-<label class="c"><input type="checkbox" id="bk" checked onchange="sv()"> Kembali ke Ats-tsalatsah setelah selesai</label>
-<button class="g" style="margin-top:34px" onclick="App.overlay()">Izin tampil di atas app lain</button>
-<button class="g" onclick="App.battery()">Abaikan optimasi baterai</button>
-<div class="sub" id="ov" style="margin-top:22px"></div>
+<div class="pg" id="p3"><h1>Setelan.</h1><div class="sub" style="margin-left:4px">Atur jeda dan izin</div>
+<div class="card rw" style="margin-top:16px"><div><b>Jeda putaran 1</b><div class="sub">Detik, sampai loading setengah</div></div><input type="number" class="num" id="g1" onchange="sv()"></div>
+<div class="card rw"><div><b>Jeda putaran 2</b><div class="sub">Detik, sampai ketemu Layla</div></div><input type="number" class="num" id="g2" onchange="sv()"></div>
+<label class="card rw"><div><b>Kembali ke app</b><div class="sub">Setelah semua selesai</div></div><input type="checkbox" id="bk" onchange="sv()"></label>
+<div class="lbl">Izin</div>
+<button class="btn g" onclick="App.overlay()">Izin tampil di atas app lain</button>
+<button class="btn g" onclick="App.battery()">Abaikan optimasi baterai</button>
+<div class="sub" id="ov" style="margin:16px 6px"></div>
 </div>
 
 <nav>
@@ -76,7 +91,7 @@ try{S=JSON.parse(localStorage.r||'{}')}catch(e){}
 var sel=new Set(S.sel||[]);
 g1.value=S.g1||10;g2.value=S.g2||30;bk.checked=S.bk!==false;
 function sv(){S.g1=+g1.value||10;S.g2=+g2.value||30;S.bk=bk.checked;S.sel=[...sel];localStorage.r=JSON.stringify(S)}
-function tab(n){for(var i=0;i<4;i++){document.getElementById('p'+i).className='pg'+(i==n?' on':'');document.getElementById('t'+i).className=i==n?'on':''}}
+function tab(n){for(var i=0;i<4;i++){document.getElementById('p'+i).className='pg'+(i==n?' on':'');document.getElementById('t'+i).className=i==n?'on':''}window.scrollTo(0,0)}
 function vis(){var t=q.value.toLowerCase();return A.filter(function(a){return !t||a.n.toLowerCase().indexOf(t)>=0||a.p.toLowerCase().indexOf(t)>=0})}
 function draw(){ls.innerHTML=vis().map(function(a){return '<label class="it"><input type="checkbox" '+(sel.has(a.p)?'checked':'')+' onchange="tg(\''+a.p+'\',this.checked)"><span>'+a.n+'<small>'+a.p+'</small></span></label>'}).join('');cnt.textContent=sel.size}
 function tg(p,c){if(c)sel.add(p);else sel.delete(p);sv();cnt.textContent=sel.size}
