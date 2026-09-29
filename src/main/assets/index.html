@@ -1,0 +1,82 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#1a1114;color:#f6e7ea;font:15px system-ui,sans-serif;padding-bottom:84px}
+.pg{display:none;padding:16px}.pg.on{display:block}
+h1{font-size:28px;margin:8px 0 12px}.sub{color:#b99;font-size:13px}
+.hero{background:#f4a9b8;color:#3a1220;border-radius:24px;padding:20px}
+.hero h2{font-size:30px;margin:0 0 12px}.hero b{font-size:44px}
+button{border:0;border-radius:16px;padding:14px;font-size:15px;font-weight:600;background:#f4a9b8;color:#3a1220;width:100%;margin-top:10px}
+button.g{background:#3a2229;color:#f6e7ea}
+input[type=text],input[type=number]{width:100%;padding:12px;border-radius:12px;border:1px solid #5a3a44;background:#2a1a20;color:#fff;font-size:15px}
+.row{display:flex;gap:8px}.row button{padding:10px;font-size:12px}
+.it{display:flex;gap:10px;align-items:center;background:#2a1a20;border-radius:14px;padding:10px 12px;margin-top:8px}
+.it span{flex:1;overflow:hidden}.it small{display:block;color:#a88;font-size:11px}
+input[type=checkbox]{width:22px;height:22px;accent-color:#f4a9b8}
+.bar{height:10px;background:#3a2229;border-radius:9px;overflow:hidden;margin-top:14px}
+.bar i{display:block;height:100%;background:#f4a9b8;width:0}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:#241519;padding:8px}
+nav a{flex:1;text-align:center;padding:12px 0;border-radius:14px;font-size:12px;color:#b99}
+nav a.on{background:#5a2a3a;color:#fff}
+pre{white-space:pre-wrap;font-size:12px;color:#e9c9d2}
+.s{display:block;margin-top:14px}
+</style></head><body>
+
+<div class="pg on" id="p0">
+<h1>Ruphas <span class="sub">MARKET</span></h1>
+<div class="hero"><h2>Auto create cabang.</h2><b id="cnt">0</b> app dipilih</div>
+<button onclick="go()">Mulai buka semua</button>
+<button class="g" onclick="App.stop()">Hentikan</button>
+<div class="bar"><i id="bar"></i></div>
+<p class="sub" id="st">Siap.</p>
+</div>
+
+<div class="pg" id="p1">
+<h1>Apps.</h1>
+<input type="text" id="q" placeholder="Cari app..." oninput="draw()">
+<div class="row">
+<button class="g" onclick="qs('mobile legends')">Mobile Legends</button>
+<button class="g" onclick="pick(1)">Pilih hasil</button>
+<button class="g" onclick="pick(0)">Kosongkan</button>
+</div>
+<div id="ls"></div>
+</div>
+
+<div class="pg" id="p2"><h1>Aktivitas.</h1><pre id="lg">Belum ada aktivitas.</pre></div>
+
+<div class="pg" id="p3"><h1>Setelan.</h1>
+<label class="s">Jeda putaran 1 (detik)<input type="number" id="g1" value="10" onchange="sv()"></label>
+<label class="s">Jeda putaran 2 (detik)<input type="number" id="g2" value="30" onchange="sv()"></label>
+<label class="s"><input type="checkbox" id="bk" checked onchange="sv()"> Kembali ke Ruphas setelah selesai</label>
+<button class="g" onclick="App.overlay()">Izin tampil di atas app lain</button>
+<button class="g" onclick="App.battery()">Abaikan optimasi baterai</button>
+<p class="sub" id="ov"></p>
+</div>
+
+<nav>
+<a id="t0" class="on" onclick="tab(0)">Cabang</a>
+<a id="t1" onclick="tab(1)">Apps</a>
+<a id="t2" onclick="tab(2)">Aktivitas</a>
+<a id="t3" onclick="tab(3)">Setelan</a>
+</nav>
+
+<script>
+var A=[],S={};
+try{S=JSON.parse(localStorage.r||'{}')}catch(e){}
+var sel=new Set(S.sel||[]);
+g1.value=S.g1||10;g2.value=S.g2||30;bk.checked=S.bk!==false;
+function sv(){S.g1=+g1.value||10;S.g2=+g2.value||30;S.bk=bk.checked;S.sel=[...sel];localStorage.r=JSON.stringify(S)}
+function tab(n){for(var i=0;i<4;i++){document.getElementById('p'+i).className='pg'+(i==n?' on':'');document.getElementById('t'+i).className=i==n?'on':''}}
+function vis(){var t=q.value.toLowerCase();return A.filter(function(a){return !t||a.n.toLowerCase().indexOf(t)>=0||a.p.toLowerCase().indexOf(t)>=0})}
+function draw(){ls.innerHTML=vis().map(function(a){return '<label class="it"><input type="checkbox" '+(sel.has(a.p)?'checked':'')+' onchange="tg(\''+a.p+'\',this.checked)"><span>'+a.n+'<small>'+a.p+'</small></span></label>'}).join('');cnt.textContent=sel.size}
+function tg(p,c){if(c)sel.add(p);else sel.delete(p);sv();cnt.textContent=sel.size}
+function pick(v){vis().forEach(function(a){if(v)sel.add(a.p);else sel.delete(a.p)});sv();draw()}
+function qs(t){q.value=t;draw()}
+function go(){if(!sel.size){st.textContent='Pilih app dulu di tab Apps.';return}sv();App.start(JSON.stringify([...sel]),S.g1,S.g2,bk.checked)}
+setInterval(function(){try{var s=JSON.parse(App.status());
+st.textContent=s.r?('Berjalan '+s.d+'/'+s.t):'Siap.';
+bar.style.width=(s.t?100*s.d/s.t:0)+'%';
+lg.textContent=s.l.length?s.l.join('\n'):'Belum ada aktivitas.';
+ov.textContent=s.o?'Izin overlay: aktif ✓':'Izin overlay: BELUM aktif (wajib)'}catch(e){}},1000);
+try{A=JSON.parse(App.apps())}catch(e){}
+draw();
+</script></body></html>
