@@ -1,55 +1,66 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ats-tsalatsah</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#1a1114;color:#f6e7ea;font:15px system-ui,sans-serif;padding-bottom:84px}
-.pg{display:none;padding:16px}.pg.on{display:block}
-h1{font-size:28px;margin:8px 0 12px}.sub{color:#b99;font-size:13px}
-.hero{background:#f4a9b8;color:#3a1220;border-radius:24px;padding:20px}
-.hero h2{font-size:30px;margin:0 0 12px}.hero b{font-size:44px}
-button{border:0;border-radius:16px;padding:14px;font-size:15px;font-weight:600;background:#f4a9b8;color:#3a1220;width:100%;margin-top:10px}
-button.g{background:#3a2229;color:#f6e7ea}
-input[type=text],input[type=number]{width:100%;padding:12px;border-radius:12px;border:1px solid #5a3a44;background:#2a1a20;color:#fff;font-size:15px}
-.row{display:flex;gap:8px}.row button{padding:10px;font-size:12px}
-.it{display:flex;gap:10px;align-items:center;background:#2a1a20;border-radius:14px;padding:10px 12px;margin-top:8px}
-.it span{flex:1;overflow:hidden}.it small{display:block;color:#a88;font-size:11px}
-input[type=checkbox]{width:22px;height:22px;accent-color:#f4a9b8}
-.bar{height:10px;background:#3a2229;border-radius:9px;overflow:hidden;margin-top:14px}
-.bar i{display:block;height:100%;background:#f4a9b8;width:0}
-nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:#241519;padding:8px}
-nav a{flex:1;text-align:center;padding:12px 0;border-radius:14px;font-size:12px;color:#b99}
-nav a.on{background:#5a2a3a;color:#fff}
-pre{white-space:pre-wrap;font-size:12px;color:#e9c9d2}
-.s{display:block;margin-top:14px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:#000;color:#fff;font:15px/1.5 -apple-system,system-ui,sans-serif;padding-bottom:88px}
+.pg{display:none;padding:30px 24px}.pg.on{display:block}
+.brand{display:flex;align-items:center;gap:14px;margin-bottom:44px}
+.brand svg{width:36px;height:32px;fill:#fff}
+.brand b{font-weight:400;font-size:12px;letter-spacing:.34em;text-transform:uppercase}
+h1{font:400 36px/1.15 Georgia,'Times New Roman',serif;margin:0 0 8px;letter-spacing:-.01em}
+.sub{color:#7a7a7a;font-size:11px;letter-spacing:.18em;text-transform:uppercase}
+.big{font:300 96px/1 Georgia,serif;margin:40px 0 6px}
+button{width:100%;padding:17px;margin-top:14px;border-radius:2px;border:1px solid #fff;background:#fff;color:#000;font-size:12px;font-weight:600;letter-spacing:.26em;text-transform:uppercase}
+button.g{background:transparent;color:#fff;border-color:#333}
+.row{display:flex;gap:8px;margin-top:6px}
+.row button{padding:13px 2px;font-size:10px;letter-spacing:.12em}
+input[type=text],input[type=number]{width:100%;padding:14px 0;border:0;border-bottom:1px solid #333;background:transparent;color:#fff;font-size:17px;border-radius:0;outline:0}
+input[type=checkbox]{width:20px;height:20px;accent-color:#fff}
+.it{display:flex;gap:16px;align-items:center;padding:15px 0;border-bottom:1px solid #1a1a1a}
+.it span{flex:1;overflow:hidden}.it small{display:block;color:#6a6a6a;font-size:11px}
+.bar{height:2px;background:#222;margin-top:34px}
+.bar i{display:block;height:2px;background:#fff;width:0;transition:width .4s}
+#st{margin-top:14px}
+pre{white-space:pre-wrap;font:12px/1.7 ui-monospace,monospace;color:#bdbdbd;margin-top:26px}
+.s{display:block;margin-top:30px;color:#7a7a7a;font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+.c{display:flex;gap:14px;align-items:center;margin-top:32px;font-size:14px}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:#000;border-top:1px solid #1a1a1a;padding:0 8px 6px}
+nav a{flex:1;text-align:center;padding:17px 0 13px;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#5f5f5f;border-top:2px solid transparent;margin-top:-1px}
+nav a.on{color:#fff;border-top-color:#fff}
 </style></head><body>
 
 <div class="pg on" id="p0">
-<h1>Ruphas <span class="sub">MARKET</span></h1>
-<div class="hero"><h2>Auto create cabang.</h2><b id="cnt">0</b> app dipilih</div>
+<div class="brand"><svg viewBox="128 145 255 223"><path d="M231.0,241.5 L149.0,241.5 L128.5,217.0 L183.0,145.5 L329.0,145.5 L374.5,205.0 L345.0,205.5 L317.0,169.5 L196.0,168.5 L158.5,217.0 L231.0,217.5 L231.0,241.5 Z M256.0,367.5 L160.5,254.0 L190.0,253.5 L256.0,330.5 L330.5,242.0 L269.0,239.5 L252.5,228.0 L243.0,205.5 L184.0,205.5 L199.5,183.0 L311.0,181.5 L328.0,205.5 L276.0,205.5 L272.5,209.0 L273.5,215.0 L277.0,217.5 L382.0,217.5 L256.0,367.5 Z M256.0,311.5 L228.5,279.0 L243.5,285.0 L244.0,224.5 L256.0,238.5 L267.5,245.0 L267.5,285.0 L283.5,279.0 L256.0,311.5 Z"/></svg><b>Ats-tsalatsah</b></div>
+<h1>Auto create<br>cabang.</h1>
+<div class="sub">Buka app satu per satu</div>
+<div class="big" id="cnt">0</div>
+<div class="sub">App dipilih</div>
 <button onclick="go()">Mulai buka semua</button>
 <button class="g" onclick="App.stop()">Hentikan</button>
 <div class="bar"><i id="bar"></i></div>
-<p class="sub" id="st">Siap.</p>
+<div class="sub" id="st">Siap.</div>
 </div>
 
 <div class="pg" id="p1">
 <h1>Apps.</h1>
+<div class="sub" style="margin-bottom:22px">Pilih yang mau dibuka</div>
 <input type="text" id="q" placeholder="Cari app..." oninput="draw()">
-<div class="row">
+<div class="row" style="margin-top:18px">
 <button class="g" onclick="qs('mobile legends')">Mobile Legends</button>
 <button class="g" onclick="pick(1)">Pilih hasil</button>
 <button class="g" onclick="pick(0)">Kosongkan</button>
 </div>
-<div id="ls"></div>
+<div id="ls" style="margin-top:8px"></div>
 </div>
 
-<div class="pg" id="p2"><h1>Aktivitas.</h1><pre id="lg">Belum ada aktivitas.</pre></div>
+<div class="pg" id="p2"><h1>Aktivitas.</h1><div class="sub">Catatan proses</div><pre id="lg">Belum ada aktivitas.</pre></div>
 
-<div class="pg" id="p3"><h1>Setelan.</h1>
+<div class="pg" id="p3"><h1>Setelan.</h1><div class="sub">Atur jeda dan izin</div>
 <label class="s">Jeda putaran 1 (detik)<input type="number" id="g1" value="10" onchange="sv()"></label>
 <label class="s">Jeda putaran 2 (detik)<input type="number" id="g2" value="30" onchange="sv()"></label>
-<label class="s"><input type="checkbox" id="bk" checked onchange="sv()"> Kembali ke Ruphas setelah selesai</label>
-<button class="g" onclick="App.overlay()">Izin tampil di atas app lain</button>
+<label class="c"><input type="checkbox" id="bk" checked onchange="sv()"> Kembali ke Ats-tsalatsah setelah selesai</label>
+<button class="g" style="margin-top:34px" onclick="App.overlay()">Izin tampil di atas app lain</button>
 <button class="g" onclick="App.battery()">Abaikan optimasi baterai</button>
-<p class="sub" id="ov"></p>
+<div class="sub" id="ov" style="margin-top:22px"></div>
 </div>
 
 <nav>
@@ -76,7 +87,7 @@ setInterval(function(){try{var s=JSON.parse(App.status());
 st.textContent=s.r?('Berjalan '+s.d+'/'+s.t):'Siap.';
 bar.style.width=(s.t?100*s.d/s.t:0)+'%';
 lg.textContent=s.l.length?s.l.join('\n'):'Belum ada aktivitas.';
-ov.textContent=s.o?'Izin overlay: aktif ✓':'Izin overlay: BELUM aktif (wajib)'}catch(e){}},1000);
+ov.textContent=s.o?'Izin overlay: aktif ✓':'Izin overlay: belum aktif (wajib)'}catch(e){}},1000);
 try{A=JSON.parse(App.apps())}catch(e){}
 draw();
 </script></body></html>
