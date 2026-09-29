@@ -1,4 +1,4 @@
-package com.ruphas.market
+package com.ats.tsalatsah
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -35,9 +35,9 @@ class RunnerService : Service() {
         val p = i.getStringArrayExtra("pkgs")
         if (p == null || p.isEmpty()) { stopSelf(); return START_NOT_STICKY }
         val nm = getSystemService(NotificationManager::class.java)
-        nm.createNotificationChannel(NotificationChannel("r", "Ruphas", NotificationManager.IMPORTANCE_LOW))
+        nm.createNotificationChannel(NotificationChannel("r", "Ats-tsalatsah", NotificationManager.IMPORTANCE_LOW))
         startForeground(1, Notification.Builder(this, "r")
-            .setContentTitle("Ruphas Market")
+            .setContentTitle("Ats-tsalatsah")
             .setContentText("Membuka app satu per satu...")
             .setSmallIcon(android.R.drawable.ic_media_play).build())
         h.removeCallbacksAndMessages(null)
