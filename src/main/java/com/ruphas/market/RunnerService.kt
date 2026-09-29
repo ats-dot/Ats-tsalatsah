@@ -1,75 +1,82 @@
 package com.ruphas.market
 
-import android.accessibilityservice.AccessibilityService
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.Service
 import android.content.Intent
 import android.os.Handler
+import android.os.IBinder
 import android.os.Looper
-import android.view.accessibility.AccessibilityEvent
 
-class RunnerService : AccessibilityService() {
+class RunnerService : Service() {
 
     companion object {
-        @Volatile var instance: RunnerService? = null
+        @Volatile var running = false
+        @Volatile var done = 0
+        @Volatile var total = 0
         val logs = ArrayList<String>()
-        var onChange: (() -> Unit)? = null
         fun log(s: String) {
-            Handler(Looper.getMainLooper()).post {
+            synchronized(logs) {
                 logs.add(0, s)
-                if (logs.size > 200) logs.removeAt(logs.size - 1)
-                onChange?.invoke()
+                while (logs.size > 100) logs.removeAt(logs.size - 1)
             }
         }
     }
-
-    private class Step(val round: Int, val pkg: String, val label: String, val delay: Long, val idx: Int, val n: Int)
 
     private val h = Handler(Looper.getMainLooper())
-    private var running = false
     private var gen = 0
 
-    override fun onServiceConnected() { instance = this; log("Layanan aktif") }
-    override fun onAccessibilityEvent(e: AccessibilityEvent?) {}
-    override fun onInterrupt() {}
-    override fun onDestroy() { stop(); instance = null; super.onDestroy() }
+    override fun onBind(i: Intent?): IBinder? = null
 
-    fun isRunning() = running
-
-    fun start(apps: List<Pair<String, String>>, d1: Long, d2: Long) {
-        stop()
-        running = true
+    override fun onStartCommand(i: Intent?, f: Int, id: Int): Int {
+        if (i == null) { stopSelf(); return START_NOT_STICKY }
+        if (i.action == "STOP") { end("Dihentikan", false); return START_NOT_STICKY }
+        val p = i.getStringArrayExtra("pkgs")
+        if (p == null || p.isEmpty()) { stopSelf(); return START_NOT_STICKY }
+        val nm = getSystemService(NotificationManager::class.java)
+        nm.createNotificationChannel(NotificationChannel("r", "Ruphas", NotificationManager.IMPORTANCE_LOW))
+        startForeground(1, Notification.Builder(this, "r")
+            .setContentTitle("Ruphas Market")
+            .setContentText("Membuka app satu per satu...")
+            .setSmallIcon(android.R.drawable.ic_media_play).build())
+        h.removeCallbacksAndMessages(null)
         val g = ++gen
-        val steps = ArrayList<Step>()
-        apps.forEachIndexed { i, a -> steps.add(Step(1, a.first, a.second, d1, i + 1, apps.size)) }
-        apps.forEachIndexed { i, a -> steps.add(Step(2, a.first, a.second, d2, i + 1, apps.size)) }
-        log("Mulai: ${apps.size} app, 2 putaran")
-        step(g, steps, 0)
+        running = true; done = 0; total = p.size * 2
+        log("Mulai: ${p.size} app")
+        step(g, p, i.getLongExtra("g1", 10000L), i.getLongExtra("g2", 30000L), i.getBooleanExtra("back", true), 0)
+        return START_NOT_STICKY
     }
 
-    fun stop() {
-        if (running) log("Dihentikan")
-        running = false
+    private fun end(msg: String, back: Boolean) {
         gen++
         h.removeCallbacksAndMessages(null)
+        running = false
+        log(msg)
+        if (back) {
+            val li = packageManager.getLaunchIntentForPackage(packageName)
+            if (li != null) { li.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); startActivity(li) }
+        }
+        stopForeground(STOP_FOREGROUND_REMOVE)
+        stopSelf()
     }
 
-    private fun step(g: Int, steps: List<Step>, i: Int) {
-        if (g != gen || !running) return
-        if (i >= steps.size) { running = false; log("Selesai"); return }
-        val s = steps[i]
-        val intent = packageManager.getLaunchIntentForPackage(s.pkg)
-        if (intent == null) {
-            log("Gagal buka ${s.pkg}")
-            step(g, steps, i + 1)
-            return
+    private fun step(g: Int, p: Array<String>, g1: Long, g2: Long, back: Boolean, i: Int) {
+        if (g != gen) return
+        if (i >= p.size * 2) { end("Selesai", back); return }
+        val pkg = p[i % p.size]
+        val round = i / p.size + 1
+        val li = packageManager.getLaunchIntentForPackage(pkg)
+        if (li == null) {
+            log("Gagal buka $pkg")
+        } else {
+            li.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            try { startActivity(li) } catch (e: Exception) { log("Error $pkg") }
+            log("Putaran $round: ${i % p.size + 1}/${p.size} $pkg")
         }
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        try { startActivity(intent) } catch (e: Exception) { log("Error ${s.pkg}: ${e.message}") }
-        log("Putaran ${s.round}: buka ${s.label} (${s.idx}/${s.n}) - ${s.pkg}")
-        h.postDelayed({
-            if (g == gen && running) {
-                performGlobalAction(GLOBAL_ACTION_HOME)
-                h.postDelayed({ step(g, steps, i + 1) }, 1500)
-            }
-        }, s.delay)
+        done = i + 1
+        h.postDelayed({ step(g, p, g1, g2, back, i + 1) }, if (round == 1) g1 else g2)
     }
+
+    override fun onDestroy() { running = false; super.onDestroy() }
 }
