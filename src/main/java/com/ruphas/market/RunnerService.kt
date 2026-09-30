@@ -1,9 +1,12 @@
 package com.ats.tsalatsah
 
+import android.app.AppOpsManager
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
+import android.app.usage.UsageEvents
+import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -30,7 +33,7 @@ class RunnerService : Service() {
         fun log(s: String) {
             synchronized(logs) {
                 logs.add(0, fmt.format(java.util.Date()) + "  " + s)
-                while (logs.size > 200) logs.removeAt(logs.size - 1)
+                while (logs.size > 300) logs.removeAt(logs.size - 1)
             }
         }
     }
@@ -38,6 +41,7 @@ class RunnerService : Service() {
     private val h = Handler(Looper.getMainLooper())
     private var gen = 0
     private var appCount = 0
+    private var retried = 0
     private var banner: View? = null
 
     override fun onBind(i: Intent?): IBinder? = null
@@ -57,18 +61,43 @@ class RunnerService : Service() {
         hideBanner()
         val g = ++gen
         appCount = p.size
+        retried = 0
         running = true; done = 0; total = p.size * 2
         log("Mulai: ${p.size} app")
+        if (!usageOk()) log("Akses penggunaan belum aktif: app tidak dicek ulang")
         step(g, p, i.getLongExtra("g1", 5000L), i.getLongExtra("g2", 7000L), i.getBooleanExtra("back", true), 0)
         return START_NOT_STICKY
+    }
+
+    private fun usageOk(): Boolean = try {
+        val ao = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+        ao.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), packageName) == AppOpsManager.MODE_ALLOWED
+    } catch (e: Exception) { false }
+
+    private fun opened(pkg: String, since: Long): Boolean = try {
+        val um = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+        val ev = um.queryEvents(since - 500L, System.currentTimeMillis())
+        val e = UsageEvents.Event()
+        var ok = false
+        while (ev.hasNextEvent()) {
+            ev.getNextEvent(e)
+            if (e.packageName == pkg && e.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND) ok = true
+        }
+        ok
+    } catch (ex: Exception) { true }
+
+    private fun launch(pkg: String): Boolean {
+        val li = packageManager.getLaunchIntentForPackage(pkg) ?: return false
+        li.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        return try { startActivity(li); true } catch (e: Exception) { false }
     }
 
     private fun end(msg: String, back: Boolean) {
         gen++
         h.removeCallbacksAndMessages(null)
         running = false
-        log(msg)
         val ok = msg == "Selesai"
+        log(if (ok && retried > 0) "Selesai ($retried app dibuka ulang)" else msg)
         if (back) {
             val li = packageManager.getLaunchIntentForPackage(packageName)
             if (li != null) { li.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); startActivity(li) }
@@ -87,7 +116,7 @@ class RunnerService : Service() {
             val wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
             val dp = resources.displayMetrics.density
             val tv = TextView(this)
-            tv.text = "✓  Selesai · $appCount app dibuka"
+            tv.text = "✓  Selesai · $appCount app dibuka" + (if (retried > 0) " · $retried diulang" else "")
             tv.setTextColor(Color.BLACK)
             tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
             tv.typeface = Typeface.DEFAULT_BOLD
@@ -128,16 +157,28 @@ class RunnerService : Service() {
         if (i >= p.size * 2) { end("Selesai", back); return }
         val pkg = p[i % p.size]
         val round = i / p.size + 1
-        val li = packageManager.getLaunchIntentForPackage(pkg)
-        if (li == null) {
+        val n = i % p.size + 1
+        val wait = if (round == 1) g1 else g2
+        val t0 = System.currentTimeMillis()
+        if (!launch(pkg)) {
             log("Gagal buka $pkg")
-        } else {
-            li.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            try { startActivity(li) } catch (e: Exception) { log("Error $pkg") }
-            log("Putaran $round: ${i % p.size + 1}/${p.size} $pkg")
+            done = i + 1
+            h.post { step(g, p, g1, g2, back, i + 1) }
+            return
         }
+        log("Putaran $round: #$n/${p.size}  $pkg")
         done = i + 1
-        h.postDelayed({ step(g, p, g1, g2, back, i + 1) }, if (li == null) 0L else if (round == 1) g1 else g2)
+        val first = minOf(wait, 2500L)
+        h.postDelayed({
+            if (g == gen) {
+                if (usageOk() && !opened(pkg, t0)) {
+                    retried++
+                    log("   #$n belum tampil, dibuka ulang")
+                    launch(pkg)
+                }
+                h.postDelayed({ step(g, p, g1, g2, back, i + 1) }, wait - first)
+            }
+        }, first)
     }
 
     override fun onDestroy() { hideBanner(); running = false; super.onDestroy() }
