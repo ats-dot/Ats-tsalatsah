@@ -116,15 +116,15 @@ class RunnerService : Service() {
             val wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
             val dp = resources.displayMetrics.density
             val tv = TextView(this)
-            tv.text = "✓  Selesai · $appCount app dibuka" + (if (retried > 0) " · $retried diulang" else "")
-            tv.setTextColor(Color.BLACK)
+            tv.text = "Selesai"
+            tv.setTextColor(Color.WHITE)
             tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
             tv.typeface = Typeface.DEFAULT_BOLD
             tv.setPadding((26 * dp).toInt(), (16 * dp).toInt(), (26 * dp).toInt(), (16 * dp).toInt())
             val bg = GradientDrawable()
-            bg.setColor(Color.WHITE)
+            bg.setColor(Color.BLACK)
             bg.cornerRadius = 40 * dp
-            bg.setStroke((1 * dp).toInt(), 0xFF999999.toInt())
+            bg.setStroke((2 * dp).toInt(), Color.WHITE)
             tv.background = bg
             tv.setOnClickListener { hideBanner() }
             val lp = WindowManager.LayoutParams(
